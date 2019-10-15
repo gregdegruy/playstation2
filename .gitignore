@@ -1,0 +1,7 @@
+
+.vscode/launch.json
+.vscode/settings.json
+classes/*.pyc
+classes/__pycache__/*.pyc
+*.log
+env/
