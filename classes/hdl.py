@@ -10,7 +10,7 @@ class HDL:
     hdlPath = ''
     hdlCommand = ''
     sliceIndex = '*u4'
-    logger = HDLLogger()
+    logger = HDLLogger('LOG.log')
 
     def __init__(self, hdd, isoFolder, hdlPath):
         self.hdd = hdd
@@ -22,6 +22,20 @@ class HDL:
         result = serial[:4] + "_" + serial[4 + 1:]
         result = result[:8] + "." + result[8:]
         return result
+
+    def saveGamesListToFile(self):
+        hdlCommand = 'hdl_toc'
+        file = self.hdd[:-1] + '_games.txt'
+        command = self.hdlPath + ' ' + hdlCommand + ' ' + self.hdd + ' > ' + file
+        os.system(command)
+        p = subprocess.Popen(command, shell=True)
+        try:
+            outs, errs = p.communicate(timeout=30)
+            self.logger.log('Saved games list for {0}'.format(self.hdd))
+        except TimeoutExpired:
+            p.kill()
+            outs, errs = p.communicate()
+            self.logger.log('Saved games list for {0} failed with error {1}'.format(self.hdd, errs))
 
     # example hdl_dump.exe inject_dvd hdd2: "Game Name (USA)" "C:\path\game.iso" SLUS_212.05 *u4
     def bulkInjectDvd(self):

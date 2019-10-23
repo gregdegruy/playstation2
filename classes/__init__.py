@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-"""Bulk load iso folders using hdl_dump"""
+"""hdl_dump Python API"""
 
 from .hdl import HDL
 from .hdllogger import HDLLogger
