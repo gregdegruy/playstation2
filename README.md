@@ -1,4 +1,4 @@
-<p align="center"><img src="img/made.png"></p>
+<p align="center"><img src="img/made.png" height="256" width="256"></p>
 
 Supporting Video Game Preservation of the PS2.
 
