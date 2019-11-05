@@ -5,3 +5,4 @@ classes/*.pyc
 classes/__pycache__/*.pyc
 *.log
 env/
+hdd?_games.txt

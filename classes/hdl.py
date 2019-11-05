@@ -6,18 +6,18 @@ from .hdllogger import HDLLogger
 
 class HDL:
     hdd = ''
-    isoFolder = ''
+    isoDirectoryPath = ''
     hdlPath = ''
     hdlCommand = ''
     sliceIndex = '*u4'
     logger = HDLLogger('LOG.log')
 
-    def __init__(self, hdd, isoFolder, hdlPath):
+    def __init__(self, hdd, isoDirectoryPath, hdlPath):
         self.hdd = hdd
         self.hdlPath = hdlPath
-        self.isoFolder = isoFolder
+        self.isoDirectoryPath = isoDirectoryPath
 
-    # example input "SLUS-21693 (1.03).iso" output "SLUS_216.93"
+    # example input -> "SLUS-21693 (1.03).iso" output "SLUS_216.93"
     def formatSerialNumberName(self, serial):
         result = serial[:4] + "_" + serial[4 + 1:]
         result = result[:8] + "." + result[8:]
@@ -30,21 +30,20 @@ class HDL:
         os.system(command)
         p = subprocess.Popen(command, shell=True)
         try:
-            outs, errs = p.communicate(timeout=30)
+            outs, errs = p.communicate(timeout=60)
             self.logger.log('Saved games list for {0}'.format(self.hdd))
         except TimeoutExpired:
             p.kill()
             outs, errs = p.communicate()
             self.logger.log('Saved games list for {0} failed with error {1}'.format(self.hdd, errs))
 
-    # example hdl_dump.exe inject_dvd hdd2: "Game Name (USA)" "C:\path\game.iso" SLUS_212.05 *u4
+    # example command -> hdl_dump.exe inject_dvd hdd2: "Game Name (USA)" "C:\path\game.iso" SLUS_212.05 *u4
     def bulkInjectDvd(self):
         self.logger.log('HDL.bulkInjectDvd() Called')
         hdlCommand = 'inject_dvd'
-        isoDirectory = os.getcwd() + '\\' + self.isoFolder
         gameName = 'undefined'
         try:
-            for root, dirs, files in os.walk(isoDirectory):
+            for root, dirs, files in os.walk(self.isoDirectoryPath):
                 for file in files:
                     with open(os.path.join(root, file), 'r') as auto:
                         fileName = os.path.splitext(file)[0]
@@ -56,12 +55,14 @@ class HDL:
                             command = self.hdlPath + ' ' + hdlCommand  + ' ' \
                                 + self.hdd + ' "' + gameName + '" ' + '"' + root + '\\' \
                                 + file + '" ' + slu + ' ' + self.sliceIndex
-                            # uncommnet me when ready for loading
-                            # subprocess.call(command)
-                            self.logger.log('{0} Loaded'.format(gameName))
+                            procOutput = '<' + hdlCommand + ' not called>'
+                            # uncomment when ready for loading
+                            # procOutput = subprocess.getoutput(command)
+                            print('Inject {0} resulted in: '.format(gameName) + procOutput)
+                            self.logger.log('Inject {0} resulted in: '.format(gameName) + procOutput)
                         elif extension == '.bin':
-                            print('Extension error: ' + file + ' is Not an iso')
-                            self.logger.log('Extension error: {0} is Not an iso'.format(file))
+                            print('Extension error: ' + gameName + ' ' + file + ' is a .bin need a .iso')
+                            self.logger.log('Extension error: {0} is a .bin need a .iso'.format(file))
         except OSError as e:
             print('OS error: {0}'.format(e))
             self.logger.log('OS error: {0} for game {1}'.format(e, gameName))
@@ -73,4 +74,4 @@ class HDL:
             self.logger.log('HDL.bulkInjectDvd() Terminated')
 
     def __str__(self):
-        return '{ hdd: "' + self.hdd + '", hdlPath: "' + self.hdlPath + '" }'
+        return '{ hdd: "' + self.hdd + '", isoDirectoryPath: "' + self.isoDirectoryPath +  '", hdlPath: "' + self.hdlPath + '" }'
