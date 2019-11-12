@@ -48,10 +48,12 @@ class HDL:
                     with open(os.path.join(root, file), 'r') as auto:
                         fileName = os.path.splitext(file)[0]
                         extension = os.path.splitext(file)[1]
+                        gameName = root.split('\\')[-1]
+                        # todo do not run bin to iso convert if an iso is in file collection
+                        # ['18 Wheeler - Americ... (USA).7z', 'SLUS-20210 (1.00).bin', 'SLUS-20210 (1.00).iso']
                         if extension == '.iso':
                             slu = 'XXXX_XXX.XX'
                             slu = self.formatSerialNumberName(fileName)
-                            gameName = root.split('\\')[-1]
                             command = self.hdlPath + ' ' + hdlCommand  + ' ' \
                                 + self.hdd + ' "' + gameName + '" ' + '"' + root + '\\' \
                                 + file + '" ' + slu + ' ' + self.sliceIndex
@@ -59,10 +61,15 @@ class HDL:
                             # uncomment when ready for loading
                             # procOutput = subprocess.getoutput(command)
                             print('Inject {0} resulted in: '.format(gameName) + procOutput)
-                            self.logger.log('Inject {0} resulted in: '.format(gameName) + procOutput)
+                            # self.logger.log('Inject {0} resulted in: '.format(gameName) + procOutput)
                         elif extension == '.bin':
+                            command = 'D:\\ApplicationFiles\\AnyToISO\\anytoiso /convert ' \
+                                + '"' + root + '\\' + fileName + '.bin' + '" ' \
+                                + '"' + root + '\\' + fileName + '.iso' + '"'
+                            procOutput = subprocess.getoutput(command)
+                            # anytoiso /convert "SLUS-20210 (1.00).bin" "SLUS-20210 (1.00).iso"
                             print('Extension error: ' + gameName + ' ' + file + ' is a .bin need a .iso')
-                            self.logger.log('Extension error: {0} is a .bin need a .iso'.format(file))
+                            # self.logger.log('Extension error: {0} {1} is a .bin need a .iso'.format(gameName, file))
         except OSError as e:
             print('OS error: {0}'.format(e))
             self.logger.log('OS error: {0} for game {1}'.format(e, gameName))

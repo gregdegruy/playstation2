@@ -2,7 +2,7 @@
 
 Supporting Video Game Preservation of the PS2.
 
-This is a python helper for the hdl_dump cli. [Docs](http://web.archive.org/web/20120720230755/http://openps2loader.info/hdldump/howto.html). You'll need the hdl_dump cli installed to run this and `hdlPath` point directly to the `hdl_dump.exe` file.
+This is a python helper for the hdl_dump cli. [Docs](http://web.archive.org/web/20120720230755/http://openps2loader.info/hdldump/howto.html). You'll need the hdl_dump cli installed to run this and `hdlPath` point directly to the `hdl_dump.exe` file. You'll need [anytoiso](https://www.crystalidea.com/anytoiso/command-line) to handle `.bin` conversions.
 
 ## Setup
 
