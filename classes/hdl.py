@@ -45,31 +45,38 @@ class HDL:
         try:
             for root, dirs, files in os.walk(self.isoDirectoryPath):
                 for file in files:
-                    with open(os.path.join(root, file), 'r') as auto:
-                        fileName = os.path.splitext(file)[0]
-                        extension = os.path.splitext(file)[1]
-                        gameName = root.split('\\')[-1]
-                        # todo do not run bin to iso convert if an iso is in file collection
-                        # ['18 Wheeler - Americ... (USA).7z', 'SLUS-20210 (1.00).bin', 'SLUS-20210 (1.00).iso']
-                        if extension == '.iso':
-                            slu = 'XXXX_XXX.XX'
-                            slu = self.formatSerialNumberName(fileName)
-                            command = self.hdlPath + ' ' + hdlCommand  + ' ' \
-                                + self.hdd + ' "' + gameName + '" ' + '"' + root + '\\' \
-                                + file + '" ' + slu + ' ' + self.sliceIndex
-                            procOutput = '<' + hdlCommand + ' not called>'
-                            # uncomment when ready for loading
-                            # procOutput = subprocess.getoutput(command)
-                            print('Inject {0} resulted in: '.format(gameName) + procOutput)
-                            # self.logger.log('Inject {0} resulted in: '.format(gameName) + procOutput)
-                        elif extension == '.bin':
-                            command = 'D:\\ApplicationFiles\\AnyToISO\\anytoiso /convert ' \
-                                + '"' + root + '\\' + fileName + '.bin' + '" ' \
-                                + '"' + root + '\\' + fileName + '.iso' + '"'
-                            procOutput = subprocess.getoutput(command)
-                            # anytoiso /convert "SLUS-20210 (1.00).bin" "SLUS-20210 (1.00).iso"
-                            print('Extension error: ' + gameName + ' ' + file + ' is a .bin need a .iso')
-                            # self.logger.log('Extension error: {0} {1} is a .bin need a .iso'.format(gameName, file))
+                    fileName = os.path.splitext(file)[0]
+                    extension = os.path.splitext(file)[1]
+                    if extension == '.7z':
+                        command = 'del "' + root + '\\' + file  + '"'
+                        # procOutput = subprocess.getoutput(command)
+                        print('Archive clean up: ' + file + ' deleted')
+                        self.logger.log('Archive clean up: ' + file + ' deleted')
+                    else:
+                        with open(os.path.join(root, file), 'r') as auto:
+                            gameName = root.split('\\')[-1]
+                            # todo do not run bin to iso convert if an iso is in file collection
+                            # ['18 Wheeler - Americ... (USA).7z', 'SLUS-20210 (1.00).bin', 'SLUS-20210 (1.00).iso']
+                            if extension == '.iso':
+                                slu = 'XXXX_XXX.XX'
+                                slu = self.formatSerialNumberName(fileName)
+                                slu = slu[0:11]
+                                command = self.hdlPath + ' ' + hdlCommand  + ' ' \
+                                    + self.hdd + ' "' + gameName + '" ' + '"' + root + '\\' \
+                                    + file + '" ' + slu + ' ' + self.sliceIndex
+                                procOutput = '<' + hdlCommand + ' not called>'
+                                # uncomment when ready for loading
+                                subprocess.call(command)
+                                # procOutput = subprocess.getoutput(command)
+                                self.logger.log('Inject: {0} '.format(gameName) + 'complete')
+                                print('Inject: {0} '.format(gameName) + 'complete')
+                            # elif extension == '.bin':
+                            #     command = 'D:\\ApplicationFiles\\AnyToISO\\anytoiso /convert ' \
+                            #         + '"' + root + '\\' + fileName + '.bin' + '" ' \
+                            #         + '"' + root + '\\' + fileName + '.iso' + '"'
+                            #     procOutput = subprocess.getoutput(command)
+                            #     print('Convert: {0} {1} to .iso'.format(gameName, file))
+                            #     self.logger.log('Convert: {0} {1} to .iso'.format(gameName, file))
         except OSError as e:
             print('OS error: {0}'.format(e))
             self.logger.log('OS error: {0} for game {1}'.format(e, gameName))
