@@ -37,6 +37,39 @@ class HDL:
             outs, errs = p.communicate()
             self.logger.log('Saved games list for {0} failed with error {1}'.format(self.hdd, errs))
 
+    def bulkConvertBinToIso(self):
+        self.logger.log('HDL.bulkInjectDvd() Called')
+        hdlCommand = 'inject_dvd'
+        gameName = 'undefined'
+        try:
+            for root, dirs, files in os.walk(self.isoDirectoryPath):
+                for file in files:
+                    fileName = os.path.splitext(file)[0]
+                    extension = os.path.splitext(file)[1]
+                    if extension == '.7z':
+                        command = 'del "' + root + '\\' + file  + '"'
+                        print('Archive clean up: ' + file + ' deleted')
+                        self.logger.log('Archive clean up: ' + file + ' deleted')
+                    else:
+                        with open(os.path.join(root, file), 'r') as auto:
+                            gameName = root.split('\\')[-1]
+                            if extension == '.bin':
+                                command = 'D:\\ApplicationFiles\\AnyToISO\\anytoiso /convert ' \
+                                    + '"' + root + '\\' + fileName + '.bin' + '" ' \
+                                    + '"' + root + '\\' + fileName + '.iso' + '"'
+                                procOutput = subprocess.getoutput(command)
+                                print('Convert: {0} {1} to .iso'.format(gameName, file))
+                                self.logger.log('Convert: {0} {1} to .iso'.format(gameName, file))
+        except OSError as e:
+            print('OS error: {0}'.format(e))
+            self.logger.log('OS error: {0} for game {1}'.format(e, gameName))
+        except:
+            e = sys.exc_info()[0]
+            print('Exception {0}'.format(e))
+            self.logger.log('Exception {0} for game {1}'.format(e, gameName))
+        finally:
+            self.logger.log('HDL.bulkInjectDvd() Terminated')
+
     # example command -> hdl_dump.exe inject_dvd hdd2: "Game Name (USA)" "C:\path\game.iso" SLUS_212.05 *u4
     def bulkInjectDvd(self):
         self.logger.log('HDL.bulkInjectDvd() Called')
@@ -49,14 +82,12 @@ class HDL:
                     extension = os.path.splitext(file)[1]
                     if extension == '.7z':
                         command = 'del "' + root + '\\' + file  + '"'
-                        # procOutput = subprocess.getoutput(command)
+                        # subprocess.call(command)
                         print('Archive clean up: ' + file + ' deleted')
                         self.logger.log('Archive clean up: ' + file + ' deleted')
                     else:
                         with open(os.path.join(root, file), 'r') as auto:
                             gameName = root.split('\\')[-1]
-                            # todo do not run bin to iso convert if an iso is in file collection
-                            # ['18 Wheeler - Americ... (USA).7z', 'SLUS-20210 (1.00).bin', 'SLUS-20210 (1.00).iso']
                             if extension == '.iso':
                                 slu = 'XXXX_XXX.XX'
                                 slu = self.formatSerialNumberName(fileName)
@@ -67,16 +98,8 @@ class HDL:
                                 procOutput = '<' + hdlCommand + ' not called>'
                                 # uncomment when ready for loading
                                 subprocess.call(command)
-                                # procOutput = subprocess.getoutput(command)
-                                self.logger.log('Inject: {0} '.format(gameName) + 'complete')
-                                print('Inject: {0} '.format(gameName) + 'complete')
-                            # elif extension == '.bin':
-                            #     command = 'D:\\ApplicationFiles\\AnyToISO\\anytoiso /convert ' \
-                            #         + '"' + root + '\\' + fileName + '.bin' + '" ' \
-                            #         + '"' + root + '\\' + fileName + '.iso' + '"'
-                            #     procOutput = subprocess.getoutput(command)
-                            #     print('Convert: {0} {1} to .iso'.format(gameName, file))
-                            #     self.logger.log('Convert: {0} {1} to .iso'.format(gameName, file))
+                                self.logger.log('Inject: ' + gameName + ' complete')
+                                print('Inject: ' + gameName + ' complete')
         except OSError as e:
             print('OS error: {0}'.format(e))
             self.logger.log('OS error: {0} for game {1}'.format(e, gameName))

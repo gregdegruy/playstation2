@@ -2,7 +2,7 @@
 
 Supporting Video Game Preservation of the PlayStation 2.
 
-A helper for the [hdl_dump cli](http://web.archive.org/web/20120720230755/http://openps2loader.info/hdldump/howto.html). You'll need the hdl_dump cli installed to run this and `hdlPath` point directly to the `hdl_dump.exe` file. You'll need [anytoiso](https://www.crystalidea.com/anytoiso/command-line) to support `.bin` conversions.
+A helper for the [hdl_dump cli](http://web.archive.org/web/20120720230755/http://openps2loader.info/hdldump/howto.html). You'll need the hdl_dump cli installed to run this and `hdlPath` point directly to the `hdl_dump.exe` file. You'll need [anytoiso](https://www.crystalidea.com/anytoiso/command-line) to support `.bin` conversions. Optionally you can add both `anytoiso` and `hdl_dump` to your environment variables on Windows to remove the need for adding a full paths for these CLIs.
 
 ## Setup
 
@@ -13,6 +13,8 @@ Once you're ready provide the full path to your game library uncomment the `proc
 Currently to delete a game this must be done directly from the PS2.
 
 ## Run
+
+Run your terminal as an admin.
 
 Setup python3 virtual env or source it if one already exists.
 ```python
