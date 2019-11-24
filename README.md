@@ -34,4 +34,4 @@ python __main__.py
 
 # Status
 
-Tested on Win10 with Python `3.5.2` on a Seagate FireCuda 2TB SSD ST2000LX001. Report an Issue to raise a bug.
+Tested on Win10 using the linux subsystem with Python `2.7.12` on a Seagate FireCuda 2TB SSD ST2000LX001.
