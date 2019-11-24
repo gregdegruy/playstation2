@@ -31,8 +31,8 @@ def test_format_slu():
     result = result[0:11]
     assert result == 'SLUS_216.93'
 
-def test_read_iso_folder():
-    print('Call ' + className + '.test_read_iso_folder()')
+def test_read_game_folder():
+    print('Call ' + className + '.test_read_game_folder()')
     expectedGames = ['Game A (USA)', 'Game B (USA)', 'Game C (USA)', 'Game D (USA)', 'Game E (USA)']
     games = []
     gameName = 'undefined'
@@ -52,7 +52,7 @@ def test_read_iso_folder():
         print('Exception {0}'.format(e))
     finally:
         for i in range(0, 4):
-            assert games[i] == expectedGames[i]
+            assert games[i] in expectedGames
 
 def test_detect_bin_and_iso():
     print('Call ' + className + '.test_detect_bin_and_iso()')
