@@ -1,5 +1,7 @@
 <p align="center"><img src="img/made.png" height="256" width="256"></p>
 
+[![Build Status](https://travis-ci.org/gregdegruy/ps2-preservation.svg?branch=master)](https://travis-ci.org/gregdegruy/ps2-preservation)
+
 Supporting Video Game Preservation of the PlayStation 2.
 
 A helper for the [hdl_dump cli](http://web.archive.org/web/20120720230755/http://openps2loader.info/hdldump/howto.html). You'll need the hdl_dump cli installed to run this and `hdlPath` point directly to the `hdl_dump.exe` file. You'll need [anytoiso](https://www.crystalidea.com/anytoiso/command-line) to support `.bin` conversions. Optionally you can add both `anytoiso` and `hdl_dump` to your environment variables on Windows to remove the need for adding a full paths for these CLIs.
@@ -33,8 +35,3 @@ python __main__.py
 # Status
 
 Tested on Win10 with Python `3.5.2` on a Seagate FireCuda 2TB SSD ST2000LX001. Report an Issue to raise a bug.
-
-| API | Status |
-|---|---|
-| exe `inject_dvd` -> py `bulkInjectDvd` |✔|
-| exe `hdl_toc` -> py `saveGamesListToFile`  |✔|
