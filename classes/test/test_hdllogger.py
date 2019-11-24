@@ -1,7 +1,6 @@
 import logging
 import os
 import platform
-from threading import Thread
 
 from ..hdllogger import HDLLogger
 
@@ -15,14 +14,14 @@ elif platform.system() == 'Linux':
     subdir = 'classes/test/'
 
 def test_init():
-    print('Calling ' + className + '.test_init()')
+    print('Call ' + className + '.test_init()')
     testLogger = HDLLogger(logName)
     assert testLogger.name == logName
     assert testLogger.logger.isEnabledFor(logging.DEBUG)
     assert testLogger.logger.handlers[0].formatter._fmt == logFormat
 
 def test_log():
-    print('Calling  ' + className + '.test_log()')
+    print('Call ' + className + '.test_log()')
     testLogger = HDLLogger(logName, 'classes/test/')
     if os.path.isfile(testLogger.fileHandlerPath):
         f = open(testLogger.fileHandlerPath, 'r+')

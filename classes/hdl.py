@@ -17,11 +17,10 @@ class HDL:
         self.hdlPath = hdlPath
         self.isoDirectoryPath = isoDirectoryPath
 
-    # example input -> "SLUS-21693 (1.03).iso" output "SLUS_216.93"
     def formatSerialNumberName(self, serial):
         result = serial[:4] + "_" + serial[4 + 1:]
         result = result[:8] + "." + result[8:]
-        return result
+        return result[0:11]
 
     def saveGamesListToFile(self):
         hdlCommand = 'hdl_toc'
@@ -91,13 +90,12 @@ class HDL:
                             if extension == '.iso':
                                 slu = 'XXXX_XXX.XX'
                                 slu = self.formatSerialNumberName(fileName)
-                                slu = slu[0:11]
                                 command = self.hdlPath + ' ' + hdlCommand  + ' ' \
                                     + self.hdd + ' "' + gameName + '" ' + '"' + root + '\\' \
                                     + file + '" ' + slu + ' ' + self.sliceIndex
                                 procOutput = '<' + hdlCommand + ' not called>'
                                 # uncomment when ready for loading
-                                subprocess.call(command)
+                                # subprocess.call(command)
                                 self.logger.log('Inject: ' + gameName + ' complete')
                                 print('Inject: ' + gameName + ' complete')
         except OSError as e:

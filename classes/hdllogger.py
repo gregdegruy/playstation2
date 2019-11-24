@@ -19,8 +19,5 @@ class HDLLogger():
         fh.setFormatter( logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s') )
         self.logger.addHandler(fh)
 
-    def __del__(self):
-        logging.shutdown()
-
     def log(self, message):
         self.logger.info(message)
