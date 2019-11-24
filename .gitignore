@@ -1,8 +1,11 @@
-
 .vscode/launch.json
 .vscode/settings.json
 classes/*.pyc
+classes/test/*.pyc
 classes/__pycache__/*.pyc
 *.log
 env/
 hdd?_games.txt
+info.sys
+__pycache__
+.pytest_cache
