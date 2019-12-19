@@ -1,6 +1,6 @@
 <p align="center"><img src="img/made.png" height="256" width="256"></p>
 
-[![Build Status](https://travis-ci.org/gregdegruy/ps2-preservation.svg?branch=master)](https://travis-ci.org/gregdegruy/ps2-preservation)
+[![Build Status](https://travis-ci.org/gregdegruy/playstation2.svg?branch=master)](https://travis-ci.org/gregdegruy/playstation2)
 
 Video Game Preservation of the PlayStation 2.
 
